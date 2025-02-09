@@ -1,0 +1,41 @@
+{
+  "name": "my-react-app",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "dependencies": {
+    "chess.js": "^1.0.0",
+    "react": "^18.2.0",
+    "react-chessboard": "^4.7.2",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "eslint": "^8.23.0",
+    "eslint-plugin-react": "^7.31.8",
+    "install": "^0.13.0",
+    "npm": "^10.9.2"
+  },
+  "homepage": ".",
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "A barebones React app"
+}
