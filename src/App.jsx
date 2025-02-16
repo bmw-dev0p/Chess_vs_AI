@@ -5,22 +5,26 @@ import "./App.css";
 function App() {
   const [mode, setMode] = useState(null);
 
+  function selectMode(selectedMode) {
+    console.log(`Game Mode Selected: ${selectedMode}`);
+    setMode(selectedMode);
+  }
+
   return (
-    <div className="App">
-      <h1>Chess AI Game</h1>
+    <div className="container">
       {mode ? (
-        // aiMode={mode} 
-        <ChessGame />
+        <ChessGame aiMode={mode} />
       ) : (
         <div>
-          <button onClick={() => setMode("human")}>Play Yourself</button>
-          <button onClick={() => setMode("easy")}>Play Computer (Easy)</button>
-          <button onClick={() => setMode("medium")}>Play Computer (Medium)</button>
-          <button onClick={() => setMode("hard")}>Play Computer (Hard)</button>
+          <button onClick={() => selectMode("human")}>Play Yourself</button>
+          <button onClick={() => selectMode("easy")}>Play Computer (Easy)</button>
+          <button onClick={() => selectMode("medium")}>Play Computer (Medium)</button>
+          <button onClick={() => selectMode("hard")}>Play Computer (Hard)</button>
         </div>
       )}
     </div>
   );
 }
+
 
 export default App;

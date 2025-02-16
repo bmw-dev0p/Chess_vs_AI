@@ -1,53 +1,87 @@
-/* Center everything */
-.App {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-  }
-  
-  /* Buttons */
-  button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    background-color: #4CAF50;
-    color: white;
-    border-radius: 5px;
-  }
-  
-  button:hover {
-    background-color: #45a049;
-  }
-  
-  /* Chessboard container */
-  .chessboard-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 90vmin;
-    width: 90vmin;
-  }
-  
-  /* Score display */
-  .score {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-/* Red error message */
+/* Main app container */
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+/* Game layout (Sidebar + Chessboard) */
+.game-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* Sidebar on the left */
+.sidebar {
+  width: 25%;
+  background-color: #f4f4f4;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Chessboard container (90% of right side) */
+.chessboard-container {
+  /* flex-grow: 1; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90vmin;
+  height: 90vmin;
+}
+
+/* Score display */
+.score {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Last move display */
+.last-move {
+  font-size: 18px;
+  font-style: italic;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+/* Make White and Black moves different colors */
+.last-move:first-of-type {
+  color: blue;
+}
+
+.last-move:last-of-type {
+  color: red;
+}
+
+/* messages */
 .message {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .message.error {
-    color: red;
-  }
-    
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.message.error {
+  color: red;
+}
+
+/* Buttons */
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
