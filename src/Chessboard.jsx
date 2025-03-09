@@ -7,7 +7,7 @@ function ChessGame({ aiMode }) {
   const [game, setGame] = useState(new Chess());
   const [captured, setCaptured] = useState({ w: [], b: [] });
   const [message, setMessage] = useState(""); // ✅ State for error/check messages
-  const [lastMove, setLastMove] = useState("");  // ✅ Single state for most recent move
+  const [moveHistory, setMoveHistory] = useState([]);  // ✅ Track full move history
   const [capturedValue, setCapturedValue] = useState({ w: 0, b: 0 });  // Track piece value captured
 
 
@@ -49,9 +49,9 @@ function ChessGame({ aiMode }) {
       return false;
     }
 
-    // ✅ Update move tracking state
+    // ✅ Update move history (add new move to the array)
     const moveNotation = `${move.color === "w" ? "White" : "Black"} ${move.piece.toUpperCase()} ${move.from} > ${move.to}`;
-    setLastMove(moveNotation);
+    setMoveHistory(prev => [moveNotation, ...prev]);  // Push new moves to the top
     console.log(`Move: ${moveNotation}`);
 
     // ✅ Track captured pieces
@@ -69,6 +69,22 @@ function ChessGame({ aiMode }) {
       console.log(`Capture: ${move.color === "w" ? "White" : "Black"} captured ${move.captured.toUpperCase()} at ${move.to} (Value: ${pieceValue} points)`);
     }
 
+    // ✅ Check for mate
+    if (gameCopy.isCheckmate()) {
+      setGame(new Chess(gameCopy.fen()));  // ✅ Force board update before stopping
+      setMessage(`Checkmate! ${move.color === "w" ? "White" : "Black"} wins!`);
+      console.log(`Game Over: Checkmate! ${move.color === "w" ? "White" : "Black"} wins!`);
+      return;
+    }
+
+    // ✅ Check for draw
+    if (gameCopy.isDraw()) {
+      setGame(new Chess(gameCopy.fen()));  // ✅ Force board update before stopping
+      setMessage("Game Over: It's a Draw!");
+      console.log("Game Over: Draw!");
+      return;
+    }
+    
     // ✅ Check if the opponent is now in check
     if (gameCopy.inCheck()) {
       console.log(`${gameCopy.turn() === "w" ? "White" : "Black"} is in CHECK!`);
@@ -113,17 +129,20 @@ function ChessGame({ aiMode }) {
       bestMove = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
     }
 
-    // Log AI move
+    // Log AI decision
+    // we want to log BEFORE updating the game state - for debugging
     console.log(`AI (${aiMode}) Move: Black ${bestMove.piece.toUpperCase()} ${bestMove.from} > ${bestMove.to}`);
-
+    // Log capture
     if (bestMove.captured) {
       console.log(`AI captured: ${bestMove.captured.toUpperCase()} at ${bestMove.to}`);
     }
 
+    // ✅ Update game state with AI move
     gameState.move(bestMove);
 
-    // ✅ Update most recent move (same `useState` as player moves)
-    setLastMove(`Black ${bestMove.piece.toUpperCase()} ${bestMove.from} > ${bestMove.to}`);
+    // ✅ Append move history
+    const moveNotation = `Black ${bestMove.piece.toUpperCase()} ${bestMove.from} > ${bestMove.to}`;
+    setMoveHistory(prev => [moveNotation, ...prev]);  // ✅ Append AI move
 
     setGame(new Chess(gameState.fen()));
   }
@@ -140,9 +159,30 @@ function ChessGame({ aiMode }) {
   return (
     <div className="game-container">
       <div className="sidebar">
-        <h1>Chess AI Game</h1>
-        <h2 className="score">White: {capturedValue.b} pts | Black: {capturedValue.w} pts</h2>
-        <h2 className="last-move">Last Move: {lastMove || "None"}</h2>
+        <h1>Chess IQ</h1>
+
+        <div className="score-box">
+          <div className="score-row">
+            <span className="score-label">White</span>
+            <span className="score-value">{capturedValue.b} pts</span>
+          </div>
+          <div className="score-row divider">
+            <span className="score-label">Black</span>
+            <span className="score-value">{capturedValue.w} pts</span>
+          </div>
+        </div>
+
+        <div className="move-history">
+          {/* <h2>Move History</h2> */}
+          <div className="history-box">
+            {moveHistory.length === 0 ? <p>You are white. Move a piece to start the game!</p> :
+              moveHistory.map((move, index) => {
+                const moveNumber = moveHistory.length - index;  // Calculate correct move number
+                return <p key={index}>{moveNumber}. {move}</p>;
+              })
+            }
+          </div>
+        </div>
         <h2 className={`message ${message ? "error" : ""}`}>{message}</h2>
       </div>
       <div className="chessboard-container">
@@ -150,6 +190,7 @@ function ChessGame({ aiMode }) {
       </div>
     </div>
   );
+
 
 
 
